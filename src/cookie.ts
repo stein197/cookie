@@ -5,9 +5,15 @@ import { KeyValueEntry } from "KeyValueEntry";
 
 export namespace cookie {
 
+	export const config = {
+		cache: true
+	};
+
 	const DEFAULT_ATTRIBUTES: Partial<Attributes> = {
 		path: "/"
 	};
+
+	const cache: TypedMap = get();
 
 	export function get(key: string): string;
 	export function get(): TypedMap;
@@ -44,6 +50,8 @@ export namespace cookie {
 	}
 
 	function getByKey(key: string): string {
+		if (config.cache)
+			return cache[key];
 		for (let [pairKey, pairValue] of pairs())
 			if (pairKey === key)
 				return pairValue;
@@ -51,6 +59,8 @@ export namespace cookie {
 	}
 
 	function getAll(): TypedMap {
+		if (config.cache)
+			return cache;
 		let result: TypedMap = {};
 		for (let [key, value] of pairs())
 			result[key] = value;
@@ -59,7 +69,7 @@ export namespace cookie {
 
 	function setForKey(key: string, value: string, attributes: Partial<Attributes>): void {
 		attributes = {...DEFAULT_ATTRIBUTES, ...attributes};
-		let str = `${key}=${value};path=${attributes.path};`;
+		let str = `${key}=${encodeURIComponent(value)};path=${attributes.path};`;
 		if (attributes.expires)
 			str += `expires=${typeof attributes.expires === "string" ? attributes.expires : attributes.expires.toUTCString()};`;
 		if(attributes.maxAge)
@@ -71,6 +81,7 @@ export namespace cookie {
 		if (attributes.sameSite)
 			str += "samesite;";
 		document.cookie = str;
+		cache[key] = value;
 	}
 
 	function setAsMap(object: TypedMap<string | ValueEntry>): void {
@@ -85,9 +96,12 @@ export namespace cookie {
 			setForKey(entry.key, entry.value, entry);
 	}
 
-	function* pairs(): Generator<string[]> {
+	function* pairs(): Generator<[string, string]> {
 		let pairs: string[] = document.cookie.split(/\s*;\s*/g);
-		for (let pair of pairs)
-			yield pair.split("=");
+		for (let pair of pairs) {
+			let [key, value] = pair.split("=");
+			value = decodeURIComponent(value);
+			yield [key, value]
+		}
 	}
 }
