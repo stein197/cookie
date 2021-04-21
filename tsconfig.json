@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"jsx": "react",
+		"outDir": "dist",
+		"target": "ESNext",
+		"strict": true,
+		"strictNullChecks": false,
+		"baseUrl": "src",
+		"rootDir": "src",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"allowUnusedLabels": false,
+		"moduleResolution": "node"
+	},
+	"include": [
+		"src"
+	]
+}
