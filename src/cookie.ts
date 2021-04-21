@@ -100,8 +100,7 @@ export namespace cookie {
 		let pairs: string[] = document.cookie.split(/\s*;\s*/g);
 		for (let pair of pairs) {
 			let [key, value] = pair.split("=");
-			value = decodeURIComponent(value);
-			yield [key, value]
+			yield [key, decodeURIComponent(value)];
 		}
 	}
 }
