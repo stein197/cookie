@@ -1,9 +1,19 @@
-import { Attributes } from "Attributes";
-import { TypedMap } from "TypedMap";
-import { ValueEntry } from "ValueEntry";
-import { KeyValueEntry } from "KeyValueEntry";
+namespace cookie {
 
-export namespace cookie {
+	type Attributes = {
+		path: string,
+		expires: string | Date,
+		maxAge: number,
+		domain: string,
+		secure: boolean,
+		sameSite: boolean
+	}
+
+	type TypedMap<T = string> = {[key: string]: T};
+
+	type ValueEntry = Partial<Attributes> & {value: string};
+
+	type KeyValueEntry = ValueEntry & {key: string};
 
 	export const config = {
 		cache: true
@@ -13,7 +23,7 @@ export namespace cookie {
 		path: "/"
 	};
 
-	const cache: TypedMap = get();
+	let cache: TypedMap = getAll(true);
 
 	export function get(key: string): string;
 	export function get(): TypedMap;
@@ -58,12 +68,14 @@ export namespace cookie {
 		return null;
 	}
 
-	function getAll(): TypedMap {
-		if (config.cache)
+	function getAll(resetCache: boolean = false): TypedMap {
+		if (config.cache && !resetCache)
 			return cache;
 		let result: TypedMap = {};
 		for (let [key, value] of pairs())
 			result[key] = value;
+		if (resetCache)
+			cache = result
 		return result;
 	}
 
