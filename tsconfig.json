@@ -1,8 +1,7 @@
 {
 	"compilerOptions": {
-		"jsx": "react",
-		"outDir": "dist",
-		"target": "ESNext",
+		"outFile": "out/cookie.js",
+		"target": "ES3",
 		"strict": true,
 		"strictNullChecks": false,
 		"baseUrl": "src",
@@ -10,7 +9,12 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"allowUnusedLabels": false,
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"downlevelIteration": true,
+		"lib": [
+			"DOM",
+			"ES2015"
+		]
 	},
 	"include": [
 		"src"

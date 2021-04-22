@@ -1,0 +1,22 @@
+{
+  "name": "ts-cookie",
+  "version": "1.0.0",
+  "description": "Simple cookie management library",
+  "main": "out/cookie.min.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/STEIN197/ts-cookie.git"
+  },
+  "keywords": [
+    "cookie"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/STEIN197/ts-cookie/issues"
+  },
+  "homepage": "https://github.com/STEIN197/ts-cookie#readme",
+  "devDependencies": {
+    "typescript": "^4.2.4"
+  }
+}
