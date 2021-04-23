@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"outFile": "out/cookie.js",
+		"outDir": "out",
 		"target": "ES3",
 		"strict": true,
 		"strictNullChecks": false,
