@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"outDir": "out",
-		"target": "ES3",
+		"target": "ESNext",
 		"strict": true,
 		"strictNullChecks": false,
 		"baseUrl": "src",
@@ -11,6 +11,8 @@
 		"allowUnusedLabels": false,
 		"moduleResolution": "node",
 		"downlevelIteration": true,
+		"declaration": true,
+		"declarationDir": "types",
 		"lib": [
 			"DOM",
 			"ES2015"
