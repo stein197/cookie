@@ -11,6 +11,7 @@
 		"allowUnusedLabels": false,
 		"moduleResolution": "node",
 		"declaration": true,
+		"esModuleInterop": true,
 		"declarationDir": "types",
 		"lib": [
 			"DOM",

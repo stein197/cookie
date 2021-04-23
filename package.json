@@ -17,6 +17,7 @@
   "homepage": "https://github.com/STEIN197/ts-cookie#readme",
   "devDependencies": {
     "@types/gulp": "^4.0.8",
+    "@types/merge-stream": "^1.1.2",
     "gulp": "^4.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "ts-node": "^9.1.1",
