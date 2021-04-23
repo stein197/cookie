@@ -10,7 +10,6 @@
 		"noUnusedParameters": true,
 		"allowUnusedLabels": false,
 		"moduleResolution": "node",
-		"downlevelIteration": true,
 		"declaration": true,
 		"declarationDir": "types",
 		"lib": [
