@@ -8,7 +8,8 @@ export default {
 	entry: `./${outDir}/cookie.js`,
 	output: {
 		filename: "[name].bundle.js",
-		path: path.resolve(__dirname, outDir)
+		path: path.resolve(__dirname, outDir),
+		library: "cookie"
 	},
 	mode: "production",
 	optimization: {
@@ -34,4 +35,3 @@ export default {
 		]
 	}
 };
-

@@ -13,7 +13,9 @@ export namespace cookie {
 		path: "/"
 	};
 
-	let cache: TypedMap = getAll(true);
+	const cache: TypedMap = {};
+	for (let [key, value] of pairs())
+		cache[key] = value;
 
 	export function get(key: string): string;
 	export function get(): TypedMap;
@@ -55,14 +57,12 @@ export namespace cookie {
 		return null;
 	}
 
-	function getAll(resetCache: boolean = false): TypedMap {
-		if (config.cache && !resetCache)
+	function getAll(): TypedMap {
+		if (config.cache)
 			return cache;
 		let result: TypedMap = {};
 		for (let [key, value] of pairs())
 			result[key] = value;
-		if (resetCache)
-			cache = result
 		return result;
 	}
 
