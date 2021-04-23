@@ -1,14 +1,14 @@
 import path from "path";
 import url from "url";
 
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-const outDir = "out";
+const DIR_NAME = path.dirname(url.fileURLToPath(import.meta.url));
+const OUT_DIR = "out";
 
 export default {
-	entry: `./${outDir}/cookie.js`,
+	entry: `./${OUT_DIR}/cookie.js`,
 	output: {
 		filename: "[name].bundle.js",
-		path: path.resolve(__dirname, outDir),
+		path: path.resolve(DIR_NAME, OUT_DIR),
 		library: "cookie"
 	},
 	mode: "production",
@@ -20,7 +20,7 @@ export default {
 			".js"
 		],
 		modules: [
-			outDir,
+			OUT_DIR,
 			"node_modules"
 		]
 	},

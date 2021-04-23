@@ -1,8 +1,7 @@
 {
-  "name": "ts-cookie",
+  "name": "@gnail/cookie",
   "version": "1.0.0",
   "description": "Simple cookie management library",
-  "main": "out/cookie.min.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -11,7 +10,6 @@
   "keywords": [
     "cookie"
   ],
-  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/STEIN197/ts-cookie/issues"

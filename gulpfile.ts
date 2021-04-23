@@ -1,11 +1,11 @@
-import * as Gulp from "gulp";
-import * as GulpTypescript from "gulp-typescript";
+import * as gulp from "gulp";
+import * as gulpTypescript from "gulp-typescript";
 
-const project: GulpTypescript.Project = GulpTypescript.createProject("tsconfig.json");
-const outDir: string = "out";
+const PROJECT: gulpTypescript.Project = gulpTypescript.createProject("tsconfig.json");
+const OUT_DIR: string = "out";
 
-export default Gulp.series(compile);
+export default gulp.series(compile);
 
 export async function compile(): Promise<void> {
-	project.src().pipe(project()).js.pipe(Gulp.dest(outDir));
+	PROJECT.src().pipe(PROJECT()).js.pipe(gulp.dest(OUT_DIR));
 }
