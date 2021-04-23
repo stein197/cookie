@@ -1,25 +1,15 @@
-namespace cookie {
+import { Attributes } from "Attributes";
+import { KeyValueEntry } from "KeyValyeEntry";
+import { TypedMap } from "TypedMap";
+import { ValueEntry } from "ValueEntry";
 
-	type Attributes = {
-		path: string,
-		expires: string | Date,
-		maxAge: number,
-		domain: string,
-		secure: boolean,
-		sameSite: boolean
-	}
-
-	type TypedMap<T = string> = {[key: string]: T};
-
-	type ValueEntry = Partial<Attributes> & {value: string};
-
-	type KeyValueEntry = ValueEntry & {key: string};
+export namespace cookie {
 
 	export const config = {
 		cache: true
 	};
 
-	const DEFAULT_ATTRIBUTES: Partial<Attributes> = {
+	const DEFAULT_ATTRIBUTES: Attributes = {
 		path: "/"
 	};
 
@@ -30,13 +20,13 @@ namespace cookie {
 	export function get(key?: string): string | TypedMap {
 		if (!document.cookie)
 			return null;
-		return key ? getByKey(key) : getAll();
+		return key ? getByKey(encodeURIComponent(key)) : getAll();
 	}
 
-	export function set(key: string, value: string, attributes: Partial<Attributes>): void;
+	export function set(key: string, value: string, attributes?: Attributes): void;
 	export function set(object: TypedMap<string | ValueEntry>): void;
 	export function set(array: KeyValueEntry[]): void;
-	export function set(a: any, b?: string, attributes?: Partial<Attributes>): void {
+	export function set(a: any, b?: string, attributes?: Attributes): void {
 		if (typeof a === "string")
 			setForKey(a, b, attributes);
 		else if (Array.isArray(a))
@@ -48,10 +38,7 @@ namespace cookie {
 	export function unset(key: string): void | never {
 		let zeroDate = new Date;
 		zeroDate.setTime(0);
-		document.cookie = `${key}=;expires=${zeroDate.toUTCString()};path=/`;
-		let value: string = get(key);
-		if (value)
-			throw new Error(`Cannot delete cookie "${key}" with value "${value}"`);
+		document.cookie = `${encodeURIComponent(key)}=;expires=${zeroDate.toUTCString()};path=/`;
 	}
 
 	export function clean(): void {
@@ -79,9 +66,9 @@ namespace cookie {
 		return result;
 	}
 
-	function setForKey(key: string, value: string, attributes: Partial<Attributes>): void {
+	function setForKey(key: string, value: string, attributes?: Attributes): void {
 		attributes = {...DEFAULT_ATTRIBUTES, ...attributes};
-		let str = `${key}=${encodeURIComponent(value)};path=${attributes.path};`;
+		let str = `${encodeURIComponent(key)}=${encodeURIComponent(value)};path=${attributes.path};`;
 		if (attributes.expires)
 			str += `expires=${typeof attributes.expires === "string" ? attributes.expires : attributes.expires.toUTCString()};`;
 		if(attributes.maxAge)
@@ -99,7 +86,10 @@ namespace cookie {
 	function setAsMap(object: TypedMap<string | ValueEntry>): void {
 		for (let key in object) {
 			let entry = object[key];
-			setForKey(key, typeof entry === "string" ? entry : entry.value, typeof entry === "string" ? null : entry);
+			if (typeof entry === "string")
+				setForKey(key, entry);
+			else
+				setForKey(key, entry.value, entry);
 		}
 	}
 
@@ -112,7 +102,7 @@ namespace cookie {
 		let pairs: string[] = document.cookie.split(/\s*;\s*/g);
 		for (let pair of pairs) {
 			let [key, value] = pair.split("=");
-			yield [key, decodeURIComponent(value)];
+			yield [decodeURIComponent(key), decodeURIComponent(value)];
 		}
 	}
 }
