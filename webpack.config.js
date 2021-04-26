@@ -7,9 +7,12 @@ const OUT_DIR = "out";
 export default {
 	entry: `./${OUT_DIR}/cookie.js`,
 	output: {
-		filename: "[name].bundle.js",
+		filename: "cookie.bundle.js",
 		path: path.resolve(DIR_NAME, OUT_DIR),
-		library: "cookie"
+		library: {
+			name: "cookie",
+			type: "var"
+		}
 	},
 	mode: "production",
 	optimization: {
@@ -30,6 +33,12 @@ export default {
 				test: /\.js$/,
 				resolve: {
 					fullySpecified: false
+				}
+			},
+			{
+				test: /\.js$/,
+				use: {
+					loader: "babel-loader"
 				}
 			}
 		]

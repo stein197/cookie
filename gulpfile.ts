@@ -1,6 +1,6 @@
 import * as gulp from "gulp";
-import * as gulpTypescript from "gulp-typescript";
 import * as fs from "fs";
+import { exec } from "child_process";
 
 const TSCONFIG_JSON = "tsconfig.json";
 let tsConfig: any;
@@ -14,13 +14,14 @@ try {
 const DIR_OUT: string = tsConfig.compilerOptions.outDir;
 const DIR_TYPES: string = tsConfig.compilerOptions.declarationDir;
 
-export default gulp.series(compile);
+export default gulp.series(compile, bundle);
 
 export async function compile(): Promise<void> {
-	let project = gulpTypescript.createProject(TSCONFIG_JSON);
-	let result = project.src().pipe(project());
-	result.pipe(gulp.dest(DIR_TYPES));
-	result.js.pipe(gulp.dest(DIR_OUT));
+	exec("npx tsc");
+}
+
+export async function bundle(): Promise<void> {
+	exec("npx webpack");
 }
 
 export async function clean(): Promise<void> {

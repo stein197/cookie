@@ -16,10 +16,11 @@
   },
   "homepage": "https://github.com/STEIN197/ts-cookie#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
     "@types/gulp": "^4.0.8",
-    "@types/merge-stream": "^1.1.2",
+    "babel-loader": "^8.2.2",
     "gulp": "^4.0.2",
-    "gulp-typescript": "^6.0.0-alpha.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
     "webpack": "^5.35.0",
