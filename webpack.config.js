@@ -1,16 +1,17 @@
 import path from "path";
 import url from "url";
 
-const DIR_NAME = path.dirname(url.fileURLToPath(import.meta.url));
-const OUT_DIR = "out";
+const CWD = path.dirname(url.fileURLToPath(import.meta.url));
+const DIR_OUT = "out";
+const NAME = "cookie";
 
 export default {
-	entry: `./${OUT_DIR}/cookie.js`,
+	entry: `./${DIR_OUT}/${NAME}.js`,
 	output: {
-		filename: "cookie.bundle.js",
-		path: path.resolve(DIR_NAME, OUT_DIR),
+		filename: `${NAME}.bundle.js`,
+		path: path.resolve(CWD, DIR_OUT),
 		library: {
-			name: "cookie",
+			name: NAME,
 			type: "var"
 		}
 	},
@@ -23,7 +24,7 @@ export default {
 			".js"
 		],
 		modules: [
-			OUT_DIR,
+			DIR_OUT,
 			"node_modules"
 		]
 	},
@@ -31,14 +32,11 @@ export default {
 		rules: [
 			{
 				test: /\.js$/,
-				resolve: {
-					fullySpecified: false
-				}
-			},
-			{
-				test: /\.js$/,
 				use: {
 					loader: "babel-loader"
+				},
+				resolve: {
+					fullySpecified: false
 				}
 			}
 		]
