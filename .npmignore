@@ -1,5 +1,7 @@
-out
-src
-gulpfile.ts
-tsconfig.json
-webpack.config.js
+/out/
+/src/
+/.gitignore
+/gulpfile.ts
+/tsconfig.json
+/babel.config.json
+/webpack.config.js
