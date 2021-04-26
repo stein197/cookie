@@ -3,8 +3,7 @@
   "version": "1.0.1",
   "description": "Simple cookie management library",
   "type": "module",
-  "main": "index.js",
-  "types": "types/index.d.ts",
+  "types": "types/cookie.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/STEIN197/ts-cookie.git"
