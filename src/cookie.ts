@@ -73,6 +73,15 @@ export function clean(): void {
 		unset(key);
 }
 
+export function enabled(): boolean {
+	if ("cookieEnabled" in navigator)
+		return navigator.cookieEnabled;
+	set("cookie", "true");
+	let exists = get("cookie") === "true";
+	unset("cookie");
+	return exists;
+}
+
 function getByKey(key: string): string {
 	for (let [pairKey, pairValue] of pairs())
 		if (pairKey === key)
