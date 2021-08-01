@@ -1,7 +1,27 @@
-import { Attributes } from "Attributes";
-import { KeyValueEntry } from "KeyValyeEntry";
-import { TypedMap } from "TypedMap";
-import { ValueEntry } from "ValueEntry";
+/**
+ * Represent cookie's additional attributes
+ */
+type Attributes = {
+	/** Path to location this cookie is available. By default is `/` */
+	path?: string,
+	/** At which date cookie expires */
+	expires?: string | Date,
+	/** Max age of cookie in seconds */
+	maxAge?: number,
+	/** Domain within which the cookie is available */
+	domain?: string,
+	secure?: boolean,
+	sameSite?: boolean
+}
+
+/** Full cookie representation in single map object */
+type KeyValueEntry = ValueEntry & {key: string}
+
+/** Simple wrap around generic type {[key: string]: <type>} */
+type TypedMap<T = string> = {[key: string]: T}
+
+/** Cookie attributes plus value field */
+type ValueEntry = Attributes & {value: string}
 
 const DEFAULT_ATTRIBUTES: Attributes = {
 	path: "/"
