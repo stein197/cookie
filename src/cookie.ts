@@ -93,6 +93,11 @@ export function clean(): void {
 		unset(key);
 }
 
+// TODO
+export function parse(data: string): TypedMap {}
+// TODO
+export function stringify(data: TypedMap): string {}
+
 function getByKey(key: string): string {
 	for (let [pairKey, pairValue] of pairs())
 		if (pairKey === key)
