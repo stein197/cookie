@@ -11,10 +11,10 @@ const TS_PROJECT: gulpTypescript.Project = gulpTypescript.createProject(TSCONFIG
 const DIR_OUT: string = tsConfig.compilerOptions.outDir;
 const DIR_TYPES: string = tsConfig.compilerOptions.declarationDir;
 
-export default build;
+export default gulp.series(clean, build);
 
-export async function build(): Promise<NodeJS.ReadWriteStream> {
-	return TS_PROJECT.src().pipe(TS_PROJECT()).js.pipe(gulpUglify()).pipe(webpackStream(webpackConfig)).pipe(gulp.dest(DIR_OUT));
+export async function build(): Promise<void> {
+	TS_PROJECT.src().pipe(TS_PROJECT()).js.pipe(gulp.dest(DIR_OUT)).pipe(webpackStream(webpackConfig)).pipe(gulpUglify()).pipe(gulp.dest(DIR_OUT));
 }
 
 export async function clean(): Promise<void> {
