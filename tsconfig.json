@@ -14,6 +14,7 @@
 		"esModuleInterop": true,
 		"declarationDir": "types",
 		"noImplicitAny": false,
+		"resolveJsonModule": true,
 		"lib": [
 			"DOM",
 			"ES2015"
