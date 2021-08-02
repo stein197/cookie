@@ -93,10 +93,20 @@ export function clean(): void {
 		unset(key);
 }
 
-// TODO
-export function parse(data: string): TypedMap {}
-// TODO
-export function stringify(data: TypedMap): string {}
+/**
+ * Parses cookie string into a key-value object.
+ * @param data Cookie string.
+ * @returns Parsed object.
+ */
+export function parse(data: string): TypedMap {
+	const pairs: string[] = data.split(/\s*;\s*/g);
+	const result: TypedMap = {};
+	for (let pair of pairs) {
+		let [key, value] = pair.split("=");
+		result[decodeURIComponent(key)] = decodeURIComponent(value);
+	}
+	return result;
+}
 
 /**
  * Checks if cookie are enabled in browser.
@@ -112,17 +122,15 @@ export function enabled(): boolean {
 }
 
 function getByKey(key: string): string {
-	for (let [pairKey, pairValue] of pairs())
-		if (pairKey === key)
-			return pairValue;
+	const documentCookie: TypedMap = parse(document.cookie);
+	for (let k in documentCookie)
+		if (k === key)
+			return documentCookie[k];
 	return null;
 }
 
 function getAll(): TypedMap {
-	let result: TypedMap = {};
-	for (let [key, value] of pairs())
-		result[key] = value;
-	return result;
+	return parse(document.cookie);
 }
 
 function setForKey(key: string, value: string, attributes?: Attributes): void {
@@ -154,12 +162,4 @@ function setAsMap(object: TypedMap<string | ValueEntry>): void {
 function setAsArray(array: KeyValueEntry[]): void {
 	for (let entry of array)
 		setForKey(entry.key, entry.value, entry);
-}
-
-function* pairs(): Generator<[string, string]> {
-	let pairs: string[] = document.cookie.split(/\s*;\s*/g);
-	for (let pair of pairs) {
-		let [key, value] = pair.split("=");
-		yield [decodeURIComponent(key), decodeURIComponent(value)];
-	}
 }
