@@ -13,6 +13,7 @@
 		"declaration": true,
 		"esModuleInterop": true,
 		"declarationDir": "types",
+		"noImplicitAny": false,
 		"lib": [
 			"DOM",
 			"ES2015"
