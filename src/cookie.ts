@@ -11,7 +11,8 @@ type Attributes = Partial<{
 	/** Domain within which the cookie is available */
 	domain: string,
 	secure: boolean,
-	sameSite: boolean
+	samesite: boolean,
+	httponly: boolean
 }>
 
 /** Simple wrap around generic type {[key: string]: <type>} */
@@ -105,25 +106,10 @@ export function parse(data: string): TypedMap {
  * @return Stringified cookie.
  */
 export function stringify(data: TypedMap<string | ValueEntry>, asHeader: boolean = true): string | string[] {
-	let result: string[] = [];
+	const result: string[] = [];
+	const delimiter: string = asHeader ? "; " : ";";
 	for (const key in data) {
-		const value: string | ValueEntry = data[key];
-		let entry: string = `${encodeURIComponent(key)}=${encodeURIComponent(typeof value === "string" ? value : value.value)}`;
-		if (typeof value !== "string") {
-			entry += ";";
-			if (value.expires)
-				entry += `${asHeader ? "Expires" : "expires"}=${typeof value.expires === "string" ? value.expires : value.expires.toUTCString()};${asHeader ? " " : ""}`;
-			if(value.maxAge)
-				entry += `${asHeader ? "Max-Age" : "max-age"}=${value.maxAge};${asHeader ? " " : ""}`;
-			if(value.domain)
-				entry += `${asHeader ? "Domain" : "domain"}=${value.domain};${asHeader ? " " : ""}`;
-			if (value.secure)
-				entry += `${asHeader ? "Secure" : "secure"};${asHeader ? " " : ""}`;
-			if (value.sameSite)
-				entry += `${asHeader ? "SameSite" : "samesite"};${asHeader ? " " : ""}`;
-			entry = entry.trimRight();
-		}
-		result.push(entry);
+		result.push(stringifyEntry(key, data[key], delimiter));
 	}
 	return asHeader ? result : result.join("; ");
 }
@@ -154,19 +140,7 @@ function getAll(): TypedMap {
 }
 
 function setForKey(key: string, value: string, attributes?: Attributes): void {
-	attributes = {...DEFAULT_ATTRIBUTES, ...attributes};
-	let str = `${encodeURIComponent(key)}=${encodeURIComponent(value)};path=${attributes.path};`;
-	if (attributes.expires)
-		str += `expires=${typeof attributes.expires === "string" ? attributes.expires : attributes.expires.toUTCString()};`;
-	if(attributes.maxAge)
-		str += `max-age=${attributes.maxAge};`;
-	if(attributes.domain)
-		str += `domain=${attributes.domain};`;
-	if (attributes.secure)
-		str += "secure;";
-	if (attributes.sameSite)
-		str += "samesite;";
-	document.cookie = str;
+	document.cookie = stringifyEntry(key, {...attributes, value}, ";");
 }
 
 function setAsMap(object: TypedMap<string | ValueEntry>): void {
@@ -177,4 +151,29 @@ function setAsMap(object: TypedMap<string | ValueEntry>): void {
 		else
 			setForKey(key, entry.value, entry);
 	}
+}
+
+function prop2attr(prop: string): string {
+	return prop.split(/(?=[A-Z])/g).join("-");
+}
+
+function stringifyEntry(key: string, entry: string | ValueEntry, delimiter: string): string {
+	const attributes: Attributes = typeof entry === "string" ? DEFAULT_ATTRIBUTES : {...DEFAULT_ATTRIBUTES, ...entry};
+	delete (attributes as ValueEntry).value;
+	const value: string = typeof entry === "string" ? entry : entry.value;
+	let result: string[] = [
+		`${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+	];
+	for (const prop in attributes) {
+		const attrValue: string | number | boolean | Date = attributes[prop];
+		const attrType: string = typeof attrValue;
+		const attrName: string = prop2attr(prop);
+		if (attrType === "string" || attrType === "number")
+			result.push(`${attrName}=${attrValue}`);
+		else if (attrValue instanceof Date)
+			result.push(`${attrName}=${attrValue.toUTCString}`);
+		else
+			result.push(attrName);
+	}
+	return result.join(delimiter);
 }
