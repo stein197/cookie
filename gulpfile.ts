@@ -15,10 +15,17 @@ const DIR_TYPES: string = tsConfig.compilerOptions.declarationDir;
 
 export default gulp.series(clean, build);
 
+/**
+ * Builds entire projects.
+ */
 export async function build(): Promise<void> {
 	TS_PROJECT.src().pipe(TS_PROJECT()).js.pipe(gulp.dest(DIR_OUT)).pipe(gulpBabel(babelConfig)).pipe(gulp.dest(DIR_OUT)).pipe(webpackStream(webpackConfig)).pipe(gulpUglify()).pipe(gulp.dest(DIR_OUT));
 }
 
+
+/**
+ * Cleans out all directories that was created by `build` task.
+ */
 export async function clean(): Promise<void> {
 	for (const dir of [DIR_OUT, DIR_TYPES]) {
 		fs.rmdirSync(dir, {
