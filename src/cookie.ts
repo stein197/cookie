@@ -1,21 +1,18 @@
 /**
  * Represent cookie's additional attributes
  */
-type Attributes = {
+type Attributes = Partial<{
 	/** Path to location this cookie is available. By default is `/` */
-	path?: string,
+	path: string,
 	/** At which date cookie expires */
-	expires?: string | Date,
+	expires: string | Date,
 	/** Max age of cookie in seconds */
-	maxAge?: number,
+	maxAge: number,
 	/** Domain within which the cookie is available */
-	domain?: string,
-	secure?: boolean,
-	sameSite?: boolean
-}
-
-/** Full cookie representation in single map object */
-type KeyValueEntry = ValueEntry & {key: string}
+	domain: string,
+	secure: boolean,
+	sameSite: boolean
+}>
 
 /** Simple wrap around generic type {[key: string]: <type>} */
 type TypedMap<T = string> = {[key: string]: T}
@@ -60,17 +57,9 @@ export function set(key: string, value: string, attributes?: Attributes): void;
  */
 export function set(object: TypedMap<string | ValueEntry>): void;
 
-/**
- * Sets cookie as array
- * @param array Array of standalone cookie entries
- */
-export function set(array: KeyValueEntry[]): void;
-
 export function set(a: any, b?: string, attributes?: Attributes): void {
 	if (typeof a === "string")
 		setForKey(a, b, attributes);
-	else if (Array.isArray(a))
-		setAsArray(a);
 	else
 		setAsMap(a);
 }
@@ -107,6 +96,16 @@ export function parse(data: string): TypedMap {
 	}
 	return result;
 }
+
+/**
+ * Stringifies map of cookies.
+ * @param data Data to be stringified.
+ * @param asHeader If `true` the result will be an array of cookie headers ready to be used in "Set-Cookie" header.
+ *                 Otherwise return string in the same format as in the `document.cookie` property.
+ * @return Stringified cookie.
+ */
+// TODO
+export function stringify(data: TypedMap<string | ValueEntry>, asHeader: boolean = true): string | string[] {}
 
 /**
  * Checks if cookie are enabled in browser.
@@ -157,9 +156,4 @@ function setAsMap(object: TypedMap<string | ValueEntry>): void {
 		else
 			setForKey(key, entry.value, entry);
 	}
-}
-
-function setAsArray(array: KeyValueEntry[]): void {
-	for (let entry of array)
-		setForKey(entry.key, entry.value, entry);
 }
