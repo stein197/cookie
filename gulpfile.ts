@@ -1,12 +1,12 @@
 import fs from "fs";
 import gulp from "gulp";
+import gulpBabel from "gulp-babel";
 import gulpTypescript from "gulp-typescript";
 import gulpUglify from "gulp-uglify";
-import gulpBabel from "gulp-babel";
 import webpackStream from "webpack-stream";
-import webpackConfig from "./webpack.config.js";
-import tsConfig from "./tsconfig.json";
 import babelConfig from "./babel.config.json";
+import tsConfig from "./tsconfig.json";
+import webpackConfig from "./webpack.config.js";
 
 const TSCONFIG_JSON: string = "tsconfig.json";
 const TS_PROJECT: gulpTypescript.Project = gulpTypescript.createProject(TSCONFIG_JSON);
