@@ -104,8 +104,29 @@ export function parse(data: string): TypedMap {
  *                 Otherwise return string in the same format as in the `document.cookie` property.
  * @return Stringified cookie.
  */
-// TODO
-export function stringify(data: TypedMap<string | ValueEntry>, asHeader: boolean = true): string | string[] {}
+export function stringify(data: TypedMap<string | ValueEntry>, asHeader: boolean = true): string | string[] {
+	let result: string[] = [];
+	for (const key in data) {
+		const value: string | ValueEntry = data[key];
+		let entry: string = `${encodeURIComponent(key)}=${encodeURIComponent(typeof value === "string" ? value : value.value)}`;
+		if (typeof value !== "string") {
+			entry += ";";
+			if (value.expires)
+				entry += `${asHeader ? "Expires" : "expires"}=${typeof value.expires === "string" ? value.expires : value.expires.toUTCString()};${asHeader ? " " : ""}`;
+			if(value.maxAge)
+				entry += `${asHeader ? "Max-Age" : "max-age"}=${value.maxAge};${asHeader ? " " : ""}`;
+			if(value.domain)
+				entry += `${asHeader ? "Domain" : "domain"}=${value.domain};${asHeader ? " " : ""}`;
+			if (value.secure)
+				entry += `${asHeader ? "Secure" : "secure"};${asHeader ? " " : ""}`;
+			if (value.sameSite)
+				entry += `${asHeader ? "SameSite" : "samesite"};${asHeader ? " " : ""}`;
+			entry = entry.trimRight();
+		}
+		result.push(entry);
+	}
+	return asHeader ? result : result.join("; ");
+}
 
 /**
  * Checks if cookie are enabled in browser.
