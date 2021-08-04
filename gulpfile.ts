@@ -6,7 +6,7 @@ import gulpUglify from "gulp-uglify";
 import webpackStream from "webpack-stream";
 import babelConfig from "./babel.config.json";
 import tsConfig from "./tsconfig.json";
-import webpackConfig from "./webpack.config.js";
+import webpackConfig from "./webpack.config";
 
 const TSCONFIG_JSON: string = "tsconfig.json";
 const TS_PROJECT: gulpTypescript.Project = gulpTypescript.createProject(TSCONFIG_JSON);
