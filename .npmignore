@@ -4,4 +4,6 @@
 /gulpfile.ts
 /tsconfig.json
 /babel.config.json
-/webpack.config.js
+/webpack.config.ts
+/README.md
+/CHANGELOG.md
