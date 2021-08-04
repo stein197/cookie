@@ -36,5 +36,6 @@ export async function clean(): Promise<void> {
 			recursive: true
 		});
 	}
-	fs.rmSync(INDEX_JS);
+	if (fs.existsSync(INDEX_JS))
+		fs.rmSync(INDEX_JS);
 }
