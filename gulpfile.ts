@@ -22,9 +22,9 @@ export default gulp.series(clean, build);
  * Builds entire projects.
  */
 export async function build(): Promise<void> {
-	const js = TS_PROJECT.src().pipe(TS_PROJECT()).js
-	js.pipe(gulp.dest(DIR_OUT)).pipe(gulpBabel(babelConfig)).pipe(gulp.dest(DIR_OUT)).pipe(webpackStream(webpackConfig)).pipe(gulpUglify()).pipe(gulp.dest(DIR_OUT));
-	js.pipe(gulp.dest(DIR_OUT)).pipe(gulpBabel(babelConfig)).pipe(gulpUglify()).pipe(gulpRename(INDEX_JS)).pipe(gulp.dest(CWD));
+	const js = TS_PROJECT.src().pipe(TS_PROJECT()).js.pipe(gulp.dest(DIR_OUT)).pipe(gulpBabel(babelConfig));
+	js.pipe(gulp.dest(DIR_OUT)).pipe(webpackStream(webpackConfig)).pipe(gulpUglify()).pipe(gulp.dest(DIR_OUT));
+	js.pipe(gulpUglify()).pipe(gulpRename(INDEX_JS)).pipe(gulp.dest(CWD));
 }
 
 /**
