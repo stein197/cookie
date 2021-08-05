@@ -1,3 +1,4 @@
+import "ts-mocha";
 import fs from "fs";
 import gulp from "gulp";
 import gulpBabel from "gulp-babel";
@@ -8,6 +9,7 @@ import webpackStream from "webpack-stream";
 import babelConfig from "./babel.config.json";
 import tsConfig from "./tsconfig.json";
 import webpackConfig from "./webpack.config";
+import mocha from "mocha";
 
 const TSCONFIG_JSON: string = "tsconfig.json";
 const TS_PROJECT: gulpTypescript.Project = gulpTypescript.createProject(TSCONFIG_JSON);
@@ -16,7 +18,7 @@ const DIR_TYPES: string = tsConfig.compilerOptions.declarationDir;
 const CWD: string = ".";
 const INDEX_JS: string = "index.js";
 
-export default gulp.series(clean, build);
+export default gulp.series(clean, build, test);
 
 /**
  * Builds entire projects.
@@ -38,4 +40,13 @@ export async function clean(): Promise<void> {
 	}
 	if (fs.existsSync(INDEX_JS))
 		fs.rmSync(INDEX_JS);
+}
+
+/**
+ * Runs unit tests
+ */
+export async function test(): Promise<void> {
+	const m: mocha = new mocha();
+	m.addFile("test/cookie.ts");
+	m.run(failures => process.on('exit', () => process.exit(failures)));
 }
