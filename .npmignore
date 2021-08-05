@@ -1,5 +1,6 @@
 /out/
 /src/
+/test/
 /.gitignore
 /gulpfile.ts
 /tsconfig.json
