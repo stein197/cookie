@@ -1,10 +1,14 @@
 import should from "should";
 import {it, describe, beforeEach} from "mocha";
-import {JSDOM} from "jsdom";
+import {DOMWindow, JSDOM} from "jsdom";
 import * as cookie from "../src/cookie";
 
 describe("DOM API", () => {
-	beforeEach(() => global.document = new JSDOM("").window.document);
+	beforeEach(() => {
+		const window: DOMWindow = new JSDOM().window;
+		global.document = window.document;
+		global.navigator = window.navigator;
+	});
 
 	describe("cookie.get()", () => {
 		it("Empty cookies returns empty object", () => {
@@ -107,7 +111,9 @@ describe("DOM API", () => {
 		});
 	});
 
-	describe.skip("cookie.enabled()", () => {});
+	it("cookie.enabled()", () => {
+		should(cookie.enabled()).be.true();
+	});
 });
 
 describe("Common API", () => {
