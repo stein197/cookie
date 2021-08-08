@@ -132,10 +132,9 @@ export function enabled(): boolean {
 }
 
 function getByKey(key: string): string {
-	const documentCookie: TypedMap = parse(document.cookie);
-	for (let k in documentCookie)
+	for (const [k, v] of Object.entries(parse(document.cookie)))
 		if (k === key)
-			return documentCookie[k];
+			return v;
 	return null;
 }
 

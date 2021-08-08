@@ -21,14 +21,35 @@ describe("DOM API", () => {
 		});
 		it("Retrieving encoded cookie returns decoded string", () => {
 			document.cookie = "key=名稱";
+			document.cookie = encodeURIComponent("名稱") + "=value";
+			console.log(document.cookie);
 			should(cookie.get("key")).be.equal("名稱");
+			should(cookie.get("名稱")).be.equal("value");
 		});
 	});
 
+	describe("cookie.unset()", () => {
+		it("Unsetting nonexistent cookie does nothing", () => {
+			cookie.unset("key");
+			should(document.cookie).be.empty();
+		});
+		it("Unsetting existing cookie cleans it out", () => {
+			document.cookie = "key=value";
+			should(document.cookie).match(/key=value/);
+			cookie.unset("key");
+			should(document.cookie).be.empty();
+		});
+		it("Unsetting encoded cookie cleans it out", () => {
+			document.cookie = encodeURIComponent("名稱") + "=value";
+			should(document.cookie).match(/=value/);
+			cookie.unset("名稱");
+			should(document.cookie).be.empty();
+		});
+	});
+
+	describe.skip("cookie.set()", () => {});
 	describe.skip("cookie.clean()", () => {});
 	describe.skip("cookie.enabled()", () => {});
-	describe.skip("cookie.set()", () => {});
-	describe.skip("cookie.unset()", () => {});
 });
 
 describe("Common API", () => {
