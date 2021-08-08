@@ -1,7 +1,7 @@
 {
-  "name": "@gnail/cookie",
-  "version": "1.0.1",
-  "description": "Simple cookie management library",
+  "name": "@stein197/cookie",
+  "version": "1.0.0",
+  "description": "Tiny JavaScript cookie library",
   "types": "types/cookie.d.ts",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
   "scripts": {
     "build": "npx gulp"
   },
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/STEIN197/ts-cookie/issues"
   },

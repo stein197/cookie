@@ -44,5 +44,4 @@ All functions are located in `cookie` object (if embedded in a browser with `<sc
 
 ## Tasks
 The package has next npm scripts that can be used:
-- `build`. Builds source code
-- `test`. Tests library
+- `build`. Builds source code.
