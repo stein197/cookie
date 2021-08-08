@@ -10,16 +10,18 @@ describe("DOM API", () => {
 		it("Empty cookies returns empty object", () => {
 			should(cookie.get()).be.empty();
 		});
-		it("Set cookies", () => {
-			cookie.set("key", "value");
-			should(cookie.get()).be.eql({
-				key: "value"
-			});
+		it("Retrieving nonexistent cookie returns null", () => {
+			should(cookie.get("a")).be.null();
+			document.cookie = "key=value";
+			should(cookie.get("a")).be.null();
 		});
-		it("Empty object after cleaning", () => {
-			cookie.set("key", "value");
-			cookie.clean();
-			should(cookie.get()).be.empty();
+		it("Retrieving existing cookie returns string value", () => {
+			document.cookie = "key=value";
+			should(cookie.get("key")).be.equal("value");
+		});
+		it("Retrieving encoded cookie returns decoded string", () => {
+			document.cookie = "key=名稱";
+			should(cookie.get("key")).be.equal("名稱");
 		});
 	});
 
