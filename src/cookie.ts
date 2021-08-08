@@ -79,7 +79,7 @@ export function unset(key: string): void {
  * Tries to delete all cookies in page (or domain)
  */
 export function clean(): void {
-	for (let key in get())
+	for (let key in getAll())
 		unset(key);
 }
 
@@ -149,7 +149,7 @@ function setForKey(key: string, value: string | number, attributes?: Attributes)
 function setAsMap(object: TypedMap<string | number | ValueEntry>): void {
 	for (const key in object) {
 		const entry = object[key];
-		if (typeof entry === "string" || typeof entry === "number")
+		if (isSimple(entry))
 			setForKey(key, entry);
 		else
 			setForKey(key, entry.value, entry);
@@ -161,17 +161,16 @@ function prop2attr(prop: string): string {
 }
 
 function stringifyEntry(key: string, entry: string | number | ValueEntry, delimiter: string): string {
-	const attributes: Attributes = typeof entry === "string" || typeof entry === "number" ? DEFAULT_ATTRIBUTES : {...DEFAULT_ATTRIBUTES, ...entry};
+	const attributes: Attributes = isSimple(entry) ? DEFAULT_ATTRIBUTES : {...DEFAULT_ATTRIBUTES, ...entry};
 	delete (attributes as ValueEntry).value;
-	const value: string | number = typeof entry === "string" || typeof entry === "number" ? entry : entry.value;
+	const value: string | number = isSimple(entry) ? entry : entry.value;
 	let result: string[] = [
 		`${encodeURIComponent(key)}=${encodeURIComponent(value)}`
 	];
 	for (const prop in attributes) {
 		const attrValue: string | number | boolean | Date = attributes[prop];
-		const attrType: string = typeof attrValue;
 		const attrName: string = prop2attr(prop);
-		if (attrType === "string" || attrType === "number")
+		if (isSimple(attrValue))
 			result.push(`${attrName}=${attrValue}`);
 		else if (attrValue instanceof Date)
 			result.push(`${attrName}=${attrValue.toUTCString()}`);
@@ -179,4 +178,9 @@ function stringifyEntry(key: string, entry: string | number | ValueEntry, delimi
 			result.push(attrName);
 	}
 	return result.join(delimiter);
+}
+
+function isSimple(obj): obj is string | number {
+	const type: string = typeof obj;
+	return type === "string" || type === "number";
 }
