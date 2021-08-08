@@ -37,7 +37,6 @@ describe("DOM API", () => {
 		it("Retrieving encoded cookie returns decoded string", () => {
 			document.cookie = "key=名稱";
 			document.cookie = encodeURIComponent("名稱") + "=value";
-			console.log(document.cookie);
 			should(cookie.get("key")).be.equal("名稱");
 			should(cookie.get("名稱")).be.equal("value");
 		});
