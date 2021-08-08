@@ -1,5 +1,5 @@
 # Tiny JavaScript cookie library
-Install it via npm:
+This tiny library provides a simple way for managing cookies in client-side. but could be used on a server too. Firstly, install it via npm:
 ```
 npm install @stein197/cookie
 ```
@@ -9,7 +9,7 @@ import * as cookie from "@stein197/cookie";
 cookie.parse(parsed);
 // ...
 ```
-and in browser:
+and in a browser:
 ```html
 <script src="cookie.min.js"></script>
 <script>
@@ -44,4 +44,4 @@ All functions are located in `cookie` object (if embedded in a browser with `<sc
 
 ## Tasks
 The package has next npm scripts that can be used:
-- `build`. Builds source code.
+- `build`. Builds source code. It will generate two ready-for-use files - minified `out/cookie.js` for browser and `index.js` for Node.js.
