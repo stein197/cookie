@@ -35,7 +35,7 @@ All functions are located in `cookie` object (if embedded in a browser with `<sc
 |**Function**|**Return type**|**Description**|
 |-|-|-|
 |`get()`<br/>`get(<key>)`|`Object`<br/>`string`|Retrieves cookie from current browser session. Retrieves either all cookies or only single entry. Returns `null` if there is/are no cookie(s).|
-|`set(<key>, <value>, [<attributes>])`<br/>`set(<object>)`<br/>`set(<array>)`|`void`|Sets cookie(s) to the current browser session. Can be set a single entry or a set of entries.|
+|`set(<key>, <value>, [<attributes>])`<br/>`set(<object>)|`void`|Sets cookie(s) to the current browser session. Can be set a single entry or a set of entries.|
 |`unset(<key>)`|`void`|Deletes single cookie entry from current browser session if possible.|
 |`clean()`|`void`|Cleans out all cookies from current browser session if possible.|
 |`parse(<string>)`|`object`|Parses cookie string into an object.|
