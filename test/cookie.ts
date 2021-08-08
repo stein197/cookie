@@ -95,7 +95,18 @@ describe("DOM API", () => {
 		});
 	});
 
-	describe.skip("cookie.clean()", () => {});
+	describe("cookie.clean()", () => {
+		it("Default call clears all cookies", () => {
+			document.cookie = "key=value";
+			cookie.clean();
+			should(document.cookie).be.empty();
+		});
+		it("Cleaning empty cookies does nothing", () => {
+			cookie.clean();
+			should(document.cookie).be.empty();
+		});
+	});
+
 	describe.skip("cookie.enabled()", () => {});
 });
 
