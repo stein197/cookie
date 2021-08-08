@@ -19,7 +19,7 @@ type Attributes = Partial<{
 type TypedMap<T = string> = {[key: string]: T}
 
 /** Cookie attributes plus value field */
-type ValueEntry = Attributes & {value: string}
+type ValueEntry = Attributes & {value: string | number}
 
 const DEFAULT_ATTRIBUTES: Attributes = {
 	path: "/"
@@ -56,7 +56,7 @@ export function set(key: string, value: string, attributes?: Attributes): void;
  * Sets cookies as map
  * @param object Map-like object. Values could be a string or cookie descriptor
  */
-export function set(object: TypedMap<string | ValueEntry>): void;
+export function set(object: TypedMap<string | number | ValueEntry>): void;
 
 export function set(a: any, b?: string, attributes?: Attributes): void {
 	if (typeof a === "string")
@@ -105,16 +105,17 @@ export function parse(data: string): TypedMap {
  * Stringifies map of cookies.
  * @param data Data to be stringified.
  * @param asHeader If `true` the result will be an array of cookie headers ready to be used in "Set-Cookie" header.
- *                 Otherwise return string in the same format as in the `document.cookie` property.
  * @return Stringified cookie.
  */
-export function stringify(data: TypedMap<string | ValueEntry>, asHeader: boolean = true): string | string[] {
+export function stringify(data: TypedMap<string | number | ValueEntry>, asHeader: boolean = true): string[] {
 	const result: string[] = [];
 	const delimiter: string = asHeader ? "; " : ";";
 	for (const key in data) {
+		if (!key)
+			continue;
 		result.push(stringifyEntry(key, data[key], delimiter));
 	}
-	return asHeader ? result : result.join("; ");
+	return result;
 }
 
 /**
@@ -142,14 +143,14 @@ function getAll(): TypedMap {
 	return parse(document.cookie);
 }
 
-function setForKey(key: string, value: string, attributes?: Attributes): void {
+function setForKey(key: string, value: string | number, attributes?: Attributes): void {
 	document.cookie = stringifyEntry(key, {...attributes, value}, ";");
 }
 
-function setAsMap(object: TypedMap<string | ValueEntry>): void {
-	for (let key in object) {
-		let entry = object[key];
-		if (typeof entry === "string")
+function setAsMap(object: TypedMap<string | number | ValueEntry>): void {
+	for (const key in object) {
+		const entry = object[key];
+		if (typeof entry === "string" || typeof entry === "number")
 			setForKey(key, entry);
 		else
 			setForKey(key, entry.value, entry);
@@ -160,10 +161,10 @@ function prop2attr(prop: string): string {
 	return prop.split(/(?=[A-Z])/g).join("-");
 }
 
-function stringifyEntry(key: string, entry: string | ValueEntry, delimiter: string): string {
-	const attributes: Attributes = typeof entry === "string" ? DEFAULT_ATTRIBUTES : {...DEFAULT_ATTRIBUTES, ...entry};
+function stringifyEntry(key: string, entry: string | number | ValueEntry, delimiter: string): string {
+	const attributes: Attributes = typeof entry === "string" || typeof entry === "number" ? DEFAULT_ATTRIBUTES : {...DEFAULT_ATTRIBUTES, ...entry};
 	delete (attributes as ValueEntry).value;
-	const value: string = typeof entry === "string" ? entry : entry.value;
+	const value: string | number = typeof entry === "string" || typeof entry === "number" ? entry : entry.value;
 	let result: string[] = [
 		`${encodeURIComponent(key)}=${encodeURIComponent(value)}`
 	];
@@ -174,7 +175,7 @@ function stringifyEntry(key: string, entry: string | ValueEntry, delimiter: stri
 		if (attrType === "string" || attrType === "number")
 			result.push(`${attrName}=${attrValue}`);
 		else if (attrValue instanceof Date)
-			result.push(`${attrName}=${attrValue.toUTCString}`);
+			result.push(`${attrName}=${attrValue.toUTCString()}`);
 		else
 			result.push(attrName);
 	}
