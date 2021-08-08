@@ -1,6 +1,15 @@
 import should from "should";
 import {it, describe} from "mocha";
-import * as cookie from "../src/cookie"
+import {JSDOM} from "jsdom";
+import * as cookie from "../src/cookie";
+
+global.document = new JSDOM("").window.document;
+
+describe("DOM API", () => {
+	it("cookie.get() on empty cookies returns empty object", () => {
+		should(cookie.get()).be.empty();
+	});
+});
 
 describe("cookie.parse()", () => {
 	it("Empty or blank string should return an empty object", () => {

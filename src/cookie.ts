@@ -40,7 +40,7 @@ export function get(): TypedMap;
 
 export function get(key?: string): string | TypedMap {
 	if (!document.cookie)
-		return null;
+		return {};
 	return key ? getByKey(encodeURIComponent(key)) : getAll();
 }
 
