@@ -50,7 +50,7 @@ export function get(key?: string): string | TypedMap {
  * @param value New value
  * @param attributes Additional attributes
  */
-export function set(key: string, value: string, attributes?: Attributes): void;
+export function set(key: string, value: string | number, attributes?: Attributes): void;
 
 /**
  * Sets cookies as map
@@ -58,7 +58,7 @@ export function set(key: string, value: string, attributes?: Attributes): void;
  */
 export function set(object: TypedMap<string | number | ValueEntry>): void;
 
-export function set(a: any, b?: string, attributes?: Attributes): void {
+export function set(a: any, b?: string | number, attributes?: Attributes): void {
 	if (typeof a === "string")
 		setForKey(a, b, attributes);
 	else
