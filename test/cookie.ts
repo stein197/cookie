@@ -10,6 +10,17 @@ describe("DOM API", () => {
 		it("Empty cookies returns empty object", () => {
 			should(cookie.get()).be.empty();
 		});
+		it("Retrieving all cookies", () => {
+			document.cookie = "a=1;path=/";
+			document.cookie = "b=2;path=/";
+			should(cookie.get()).be.eql({
+				a: "1",
+				b: "2"
+			});
+		});
+	});
+
+	describe("cookie.get(<key>)", () => {
 		it("Retrieving nonexistent cookie returns null", () => {
 			should(cookie.get("a")).be.null();
 			document.cookie = "key=value";
@@ -47,7 +58,43 @@ describe("DOM API", () => {
 		});
 	});
 
-	describe.skip("cookie.set()", () => {});
+	describe("cookie.set(<key>, <value>, [<attributes>])", () => {
+		it("Default", () => {
+			cookie.set("key", "value");
+			cookie.set("a", 1);
+			cookie.set("b", 2, {
+				maxAge: 3600
+			});
+			should(document.cookie).match(/key=value; a=1; b=2/)
+		});
+		it("Setting multibyte value saves encoded string", () => {
+			cookie.set("名稱", "value");
+			cookie.set("key", "名稱");
+			should(document.cookie).match(/(?:%[0-9A-F]{2})+=value; key=(?:%[0-9A-F]{2})+/);
+		});
+	});
+
+	describe("cookie.set(<map>)", () => {
+		it("Default", () => {
+			cookie.set({
+				key: "value",
+				a: 1,
+				b: {
+					value: 2,
+					maxAge: 3600
+				}
+			});
+			should(document.cookie).match(/key=value; a=1; b=2/)
+		});
+		it("Setting multibyte value saves encoded string", () => {
+			cookie.set({
+				名稱: "value",
+				key: "名稱"
+			});
+			should(document.cookie).match(/(?:%[0-9A-F]{2})+=value; key=(?:%[0-9A-F]{2})+/);
+		});
+	});
+
 	describe.skip("cookie.clean()", () => {});
 	describe.skip("cookie.enabled()", () => {});
 });
@@ -266,3 +313,5 @@ describe("Real-world examples", () => {
 		});
 	});
 });
+
+it.skip("Integration testing");
