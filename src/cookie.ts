@@ -86,13 +86,16 @@ export function clean(): void {
 /**
  * Parses cookie string into a key-value object.
  * @param data Cookie string.
- * @returns Parsed object.
+ * @returns Parsed object. If the string contains key with empty value, then the result will contain that entry with
+ *          empty value. If the string contains entry with empty value, then the result will not contain that entry.
  */
 export function parse(data: string): TypedMap {
-	const pairs: string[] = data.split(/\s*;\s*/g);
+	const pairs: string[] = data.trim().split(/\s*;\s*/g).filter(pair => pair.length);
 	const result: TypedMap = {};
 	for (let pair of pairs) {
-		let [key, value] = pair.split("=");
+		let [key, value] = pair.split("=").map(entry => entry.trim());
+		if (!key)
+			continue;
 		result[decodeURIComponent(key)] = decodeURIComponent(value);
 	}
 	return result;
