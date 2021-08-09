@@ -42,6 +42,5 @@ All functions are located in `cookie` object (if embedded in a browser with `<sc
 |`stringify(<data>, [<asHeader>])`|`string`|Converts cookies object to string. The sencod parameter defines format of the result. If `true`, the result will be returned to be used in "Set-Cookie" HTTP header, otherwise returns set of key-value pairs separated by "=" sign and delimited by "; " char. `true` by default.|
 |`enabled()`|`boolean`|Returns `true` if cookies are enabled in a browser.|
 
-## Tasks
-The package has next npm scripts that can be used:
-- `build`. Builds source code. It will generate two ready-for-use files - minified `out/cookie.js` for browser and `index.js` for Node.js.
+## Build
+To build the project, run `npm i && npm run build`. It will produce two files - minified `out/cookie.js` for browser usage and `index.js` for Node.js environment.
