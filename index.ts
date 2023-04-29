@@ -70,20 +70,6 @@ class Cookie<T extends string[] = string[]> {
 	}
 
 	/**
-	 * Checks if the there is a cookie with specified key.
-	 * @param key Key of which value to check.
-	 * @returns `true` if there is a cookie associated with the specified key.
-	 * @example
-	 * ```ts
-	 * this.has("ExistingCookie");    // true
-	 * this.has("NonexistentCookie"); // false
-	 * ```
-	 */
-	public has<K extends T[number]>(key: K): boolean {
-		return this.get(key) != null;
-	}
-
-	/**
 	 * Sets a cookie value for the specified key.
 	 * @param key Key.
 	 * @param value New value.
@@ -130,6 +116,20 @@ class Cookie<T extends string[] = string[]> {
 	}
 
 	/**
+	 * Checks if the there is a cookie with specified key.
+	 * @param key Key of which value to check.
+	 * @returns `true` if there is a cookie associated with the specified key.
+	 * @example
+	 * ```ts
+	 * this.has("ExistingCookie");    // true
+	 * this.has("NonexistentCookie"); // false
+	 * ```
+	 */
+	public has<K extends T[number]>(key: K): boolean {
+		return this.get(key) != null;
+	}
+
+	/**
 	 * Removes a cookie by the key.
 	 * @param key Key to remove.
 	 * @example
@@ -164,6 +164,8 @@ class Cookie<T extends string[] = string[]> {
 	 */
 	public static parse<T extends string[] = string[]>(data: string): {[K in T[number]]?: string} {
 		const result: any = {};
+		if (!data)
+			return result;
 		const items = data.split(/\s*;\s*/);
 		for (const item of items) {
 			const [rawKey, rawValue] = item.split("=");
