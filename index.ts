@@ -141,7 +141,8 @@ class Cookie<T extends string[] = string[]> {
 	public unset<K extends T[number]>(key: K): void {
 		this.set(key, "", {
 			expires: new Date(0),
-			maxAge: 0
+			maxAge: 0,
+			domain: ""
 		});
 	}
 
