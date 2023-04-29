@@ -23,7 +23,7 @@ class Cookie<T extends string[] = string[]> {
 	private static readonly OPTIONS_KEY_TO_HTTP_KEY: {[K in keyof Options]: string} = {
 		domain: "Domain",
 		expires: "Expires",
-		httpOnly: "httpOnly",
+		httpOnly: "HttpOnly",
 		maxAge: "Max-Age",
 		partitioned: "Partitioned",
 		path: "Path",
