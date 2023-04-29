@@ -107,8 +107,25 @@ describe("Cookie.clear()", () => {
 	});
 });
 
-// TODO
-describe("Cookie.parse()", () => {});
+describe("Cookie.parse()", () => {
+	it("Should return an empty object when the string is empty", () => {
+		assert.deepStrictEqual(Cookie.parse(dom.window.document.cookie), {});
+	});
+	it("Should return correct object", () => {
+		dom.window.document.cookie = "key1=value1";
+		dom.window.document.cookie = "key2=value2";
+		assert.deepStrictEqual(Cookie.parse(dom.window.document.cookie), {
+			key1: "value1",
+			key2: "value2"
+		});
+	});
+	it("Should automaticaly decode percent-encoding", () => {
+		dom.window.document.cookie = "key=%22value%22";
+		assert.deepStrictEqual(Cookie.parse(dom.window.document.cookie), {
+			key: "\"value\""
+		});
+	});
+});
 
 // TODO
 describe("Cookie.stringify()", () => {});
