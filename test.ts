@@ -92,8 +92,20 @@ describe("Cookie.unset()", () => {
 	});
 });
 
-// TODO
-describe("Cookie.clear()", () => {});
+describe("Cookie.clear()", () => {
+	it("Should remove all possible cookies", () => {
+		cookie.set({
+			key1: "value1",
+			key2: "value2"
+		});
+		assert.deepStrictEqual(cookie.get(), {
+			key1: "value1",
+			key2: "value2"
+		});
+		cookie.clear();
+		assert.deepStrictEqual(cookie.get(), {});
+	});
+});
 
 // TODO
 describe("Cookie.parse()", () => {});
