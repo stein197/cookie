@@ -16,15 +16,15 @@ describe("Cookie.get()", () => {
 			assert.deepStrictEqual(cookie.get(), {});
 		});
 		it("Should return correct result", () => {
-			dom.window.document.cookie += "key1=value1";
-			dom.window.document.cookie += "key2=value2";
+			dom.window.document.cookie = "key1=value1";
+			dom.window.document.cookie = "key2=value2";
 			assert.deepStrictEqual(cookie.get(), {
 				key1: "value1",
 				key2: "value2"
 			});
 		});
 		it("Should return decoded values", () => {
-			dom.window.document.cookie += "key=%22value%22";
+			dom.window.document.cookie = "key=%22value%22";
 			assert.deepStrictEqual(cookie.get(), {
 				key: "\"value\""
 			});
@@ -35,11 +35,11 @@ describe("Cookie.get()", () => {
 			assert.equal(cookie.get("key"), null);
 		});
 		it("Should return correct value", () => {
-			dom.window.document.cookie += "key=value";
+			dom.window.document.cookie = "key=value";
 			assert.equal(cookie.get("key"), "value");
 		});
 		it("Should return decoded value", () => {
-			dom.window.document.cookie += "key=%22value%22";
+			dom.window.document.cookie = "key=%22value%22";
 			assert.equal(cookie.get("key"), "\"value\"");
 		});
 	});

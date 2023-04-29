@@ -103,14 +103,14 @@ class Cookie<T extends string[] = string[]> {
 	public set(a: any, b?: any, c?: any): void {
 		const isSingle = typeof a === "string" && typeof b === "string";
 		if (isSingle) {
-			this.__document.cookie += Cookie.__stringifyItem(a, b, c ? c : {...Cookie.DEFAULT_OPTIONS, ...c});
+			this.__document.cookie = Cookie.__stringifyItem(a, b, c ? c : {...Cookie.DEFAULT_OPTIONS, ...c});
 		} else {
 			for (const key in a) {
 				const value = a[key];
 				const valueType = typeof value;
 				const realValue = valueType === "string" ? value : value.value;
 				const options = valueType === "string" ? Cookie.DEFAULT_OPTIONS : {...Cookie.DEFAULT_OPTIONS, ...value};
-				this.__document.cookie += Cookie.__stringifyItem(key, realValue, options);
+				this.__document.cookie = Cookie.__stringifyItem(key, realValue, options);
 			}
 		}
 	}
