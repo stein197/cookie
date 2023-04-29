@@ -3,7 +3,7 @@ export = Cookie;
 /**
  * Encapsulates {@link Document.cookie} property. Allows to work with it more easily. It can be used to manipulate
  * cookies instead of manipulating the raw `document.cookie` property. All data is percent-encoded when saving and
- * decoded back when retrieving.
+ * decoded back when retrieving. When setting values, it uses "Path=/" option by default.
  * @typeParam T - List of keys that the current `document.cookie` could have.
  * @example
  * Basic usage
@@ -110,6 +110,7 @@ class Cookie<T extends string[] = string[]> {
 				const valueType = typeof value;
 				const realValue = valueType === "string" ? value : value.value;
 				const options = valueType === "string" ? Cookie.DEFAULT_OPTIONS : {...Cookie.DEFAULT_OPTIONS, ...value};
+				delete options.value;
 				this.__document.cookie = Cookie.__stringifyItem(key, realValue, options);
 			}
 		}
@@ -198,7 +199,8 @@ class Cookie<T extends string[] = string[]> {
 		for (const key in data) {
 			const value = data[key];
 			const realValue = typeof value === "string" ? value : value.value;
-			const options = typeof value === "string" ? this.DEFAULT_OPTIONS : value;
+			const options = typeof value === "string" ? this.DEFAULT_OPTIONS : {...this.DEFAULT_OPTIONS, ...value};
+			delete (options as any).value;
 			result.push(this.__stringifyItem(key, realValue, options));
 		}
 		return result;

@@ -158,7 +158,7 @@ describe("Cookie.stringify()", () => {
 				sameSite: "Strict",
 				secure: true
 			}
-		}), [`key=value; Domain=domain.com; Expires: ${now.toUTCString()}; HttpOnly; Max-Age=10000; Partitioned; Path=/; SameSite=Strict; Secure`]);
+		}), [`key=value; Path=/; Domain=domain.com; Expires=${now.toUTCString()}; HttpOnly; Max-Age=10000; Partitioned; SameSite=Strict; Secure`]);
 	});
 	it("Should not emit false option values", () => {
 		assert.deepStrictEqual(Cookie.stringify({
