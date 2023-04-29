@@ -45,7 +45,6 @@ describe("Cookie.get()", () => {
 	});
 });
 
-// TODO
 describe("Cookie.set()", () => {
 	describe("Cookie.set(key, value, options)", () => {
 		it("Should correctly set value", () => {
@@ -74,8 +73,15 @@ describe("Cookie.set()", () => {
 	});
 });
 
-// TODO
-describe("Cookie.has()", () => {});
+describe("Cookie.has()", () => {
+	it("Should return false when the entry does not exist", () => {
+		assert.equal(cookie.has("key"), false);
+	});
+	it("Should return true when the entry exists", () => {
+		cookie.set("key", "value");
+		assert.equal(cookie.has("key"), true);
+	});
+});
 
 // TODO
 describe("Cookie.unset()", () => {});
