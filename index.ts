@@ -164,9 +164,7 @@ class Cookie<T extends string[] = string[]> {
 	 */
 	public static parse<T extends string[] = string[]>(data: string): {[K in T[number]]?: string} {
 		const result: any = {};
-		if (!data)
-			return result;
-		const items = data.split(/\s*;\s*/);
+		const items = data.split(/\s*;\s*/).filter(item => item);
 		for (const item of items) {
 			const [rawKey, rawValue] = item.split("=");
 			let key: string, value: string;
