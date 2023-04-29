@@ -47,12 +47,31 @@ describe("Cookie.get()", () => {
 
 // TODO
 describe("Cookie.set()", () => {
-
-	// TODO
-	describe("Cookie.set(key, value, options)", () => {});
-
-	// TODO
-	describe("Cookie.set(data)", () => {});
+	describe("Cookie.set(key, value, options)", () => {
+		it("Should correctly set value", () => {
+			cookie.set("key", "value");
+			assert.equal(cookie.get("key"), "value");
+			assert.equal(dom.window.document.cookie.indexOf("key=value") >= 0, true);
+		});
+		it("Should encode both key and value", () => {
+			cookie.set("key", "\"value\"");
+			assert.equal(cookie.get("key"), "\"value\"");
+			assert.equal(dom.window.document.cookie.indexOf("key=%22value%22") >= 0, true);
+		});
+	});
+	describe("Cookie.set(data)", () => {
+		it("Should correctly set data", () => {
+			cookie.set({
+				key1: "value1",
+				key2: {
+					value: "value2",
+					path: "/"
+				}
+			});
+			assert.deepStrictEqual(cookie.get(), {key1: "value1", key2: "value2"});
+			assert.equal(dom.window.document.cookie.indexOf("key1=value1; key2=value2") >= 0, true);
+		});
+	});
 });
 
 // TODO
