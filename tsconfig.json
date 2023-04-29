@@ -1,26 +1,15 @@
 {
 	"compilerOptions": {
-		"outDir": "out",
 		"target": "ESNext",
+		"module": "CommonJS",
 		"strict": true,
-		"strictNullChecks": false,
-		"baseUrl": "src",
-		"rootDir": "src",
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"allowUnusedLabels": false,
 		"moduleResolution": "node",
 		"declaration": true,
-		"esModuleInterop": true,
-		"declarationDir": "types",
-		"noImplicitAny": false,
-		"resolveJsonModule": true,
-		"lib": [
-			"DOM",
-			"ES2015"
-		]
+		"sourceMap": true,
+		"inlineSources": true,
+		"allowSyntheticDefaultImports": true
 	},
-	"include": [
-		"src"
+	"files": [
+		"index.ts"
 	]
 }

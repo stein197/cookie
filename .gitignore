@@ -1,4 +1,4 @@
 /node_modules/
-/types/
-/out/
-/index.js
+/*.d.ts
+/*.js
+/*.map
