@@ -127,8 +127,50 @@ describe("Cookie.parse()", () => {
 	});
 });
 
-// TODO
-describe("Cookie.stringify()", () => {});
+describe("Cookie.stringify()", () => {
+	it("Should return an empty array when the object is empty", () => {
+		assert.deepStrictEqual(Cookie.stringify({}), []);
+	});
+	it("Should return correct result", () => {
+		assert.deepStrictEqual(Cookie.stringify({
+			key1: "value1",
+			key2: {
+				value: "value2"
+			}
+		}), ["key1=value1; Path=/", "key2=value2; Path=/"]);
+	});
+	it("Should automatically encode data", () => {
+		assert.deepStrictEqual(Cookie.stringify({
+			key: "\"value\""
+		}), ["key=%22value%22; Path=/"]);
+	});
+	it("Should correctly stringify options", () => {
+		const now = new Date();
+		assert.deepStrictEqual(Cookie.stringify({
+			key: {
+				value: "value",
+				domain: "domain.com",
+				expires: now,
+				httpOnly: true,
+				maxAge: 10000,
+				partitioned: true,
+				path: "/",
+				sameSite: "Strict",
+				secure: true
+			}
+		}), [`key=value; Domain=domain.com; Expires: ${now.toUTCString()}; HttpOnly; Max-Age=10000; Partitioned; Path=/; SameSite=Strict; Secure`]);
+	});
+	it("Should not emit false option values", () => {
+		assert.deepStrictEqual(Cookie.stringify({
+			key: {
+				value: "value",
+				httpOnly: false,
+				partitioned: false,
+				secure: false
+			}
+		}), ["key=value; Path=/"]);
+	});
+});
 
 it("Complex examples", () => {
 	
