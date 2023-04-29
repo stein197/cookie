@@ -83,8 +83,14 @@ describe("Cookie.has()", () => {
 	});
 });
 
-// TODO
-describe("Cookie.unset()", () => {});
+describe("Cookie.unset()", () => {
+	it("Should remove a cookie entry", () => {
+		dom.window.document.cookie = "key=value";
+		cookie.unset("key");
+		assert.equal(cookie.has("key"), false);
+		assert.equal(dom.window.document.cookie.indexOf("key=value") < 0, true);
+	});
+});
 
 // TODO
 describe("Cookie.clear()", () => {});
