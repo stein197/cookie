@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "clean": "del .\\*.js .\\*.d.ts .\\*.map 2>nul",
+    "pretest": "npm run clean",
     "test": "ts-mocha test.ts",
     "build": "tsc"
   },
