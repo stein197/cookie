@@ -51,7 +51,7 @@ class Cookie<T extends string[] = string[]> {
 	public get(): {[K in T[number]]?: string};
 
 	/**
-	 * Returns value by the provided key or `null` if there was no value set for the key.
+	 * Returns a value by the provided key or `null` if there was no value set for the key.
 	 * @param key Key of which value to return.
 	 * @returns Value, associated with the key or `null` if there was no value set for the key.
 	 * @example
@@ -104,15 +104,15 @@ class Cookie<T extends string[] = string[]> {
 		const isSingle = typeof a === "string" && typeof b === "string";
 		if (isSingle) {
 			this.__document.cookie = Cookie.__stringifyItem(a, b, c ? c : {...Cookie.DEFAULT_OPTIONS, ...c});
-		} else {
-			for (const key in a) {
-				const value = a[key];
-				const valueType = typeof value;
-				const realValue = valueType === "string" ? value : value.value;
-				const options = valueType === "string" ? Cookie.DEFAULT_OPTIONS : {...Cookie.DEFAULT_OPTIONS, ...value};
-				delete options.value;
-				this.__document.cookie = Cookie.__stringifyItem(key, realValue, options);
-			}
+			return;
+		}
+		for (const key in a) {
+			const value = a[key];
+			const valueType = typeof value;
+			const realValue = valueType === "string" ? value : value.value;
+			const options = valueType === "string" ? Cookie.DEFAULT_OPTIONS : {...Cookie.DEFAULT_OPTIONS, ...value};
+			delete options.value;
+			this.__document.cookie = Cookie.__stringifyItem(key, realValue, options);
 		}
 	}
 
@@ -141,8 +141,7 @@ class Cookie<T extends string[] = string[]> {
 	public unset<K extends T[number]>(key: K): void {
 		this.set(key, "", {
 			expires: new Date(0),
-			maxAge: 0,
-			domain: ""
+			maxAge: 0
 		});
 	}
 
